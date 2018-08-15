@@ -159,4 +159,27 @@ class RectRot180View (ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : RectRot180View) {
+
+        private val lrr : LinkedRectRot = LinkedRectRot(0)
+
+        private val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            lrr.draw(canvas, paint)
+            animator.animate {
+                lrr.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            lrr.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
