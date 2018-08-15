@@ -34,8 +34,14 @@ class RectRot180View (ctx : Context) : View(ctx) {
 
     private val renderer : Renderer = Renderer(this)
 
+    var onAnimationComplete : OnAnimationComplete? = null
+
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
+    }
+
+    fun addOnAnimationListener(onComplete : (Int) -> Unit, onReset : (Int) -> Unit) {
+        onAnimationComplete = OnAnimationComplete(onComplete, onReset)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
@@ -175,6 +181,10 @@ class RectRot180View (ctx : Context) : View(ctx) {
             animator.animate {
                 lrr.update {i, scl ->
                     animator.stop()
+                    when (scl) {
+                        0f -> view.onAnimationComplete?.onReset?.invoke(i)
+                        1f -> view.onAnimationComplete?.onComplete?.invoke(i)
+                    }
                 }
             }
         }
@@ -194,4 +204,6 @@ class RectRot180View (ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class OnAnimationComplete(var onComplete : (Int) -> Unit, var onReset : (Int) -> Unit)
 }
