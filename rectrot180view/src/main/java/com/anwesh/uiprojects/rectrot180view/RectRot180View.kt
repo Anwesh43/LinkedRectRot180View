@@ -10,8 +10,22 @@ import android.graphics.Paint
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.content.Context
+import android.graphics.Color
 
 val nodes : Int = 5
+
+fun Canvas.drawRR180Node(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val xGap : Float = w / nodes
+    val hGap : Float = h / nodes
+    paint.color = Color.parseColor("#009688")
+    save()
+    translate((i + 1) * xGap, (i + 1) * hGap)
+    rotate(180f * scale)
+    drawRect(RectF(-xGap, -hGap, 0f, 0f), paint)
+    restore()
+}
 
 class RectRot180View (ctx : Context) : View(ctx) {
 
