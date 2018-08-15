@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.rectrot180view
  * Created by anweshmishra on 16/08/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.graphics.Paint
@@ -182,6 +183,15 @@ class RectRot180View (ctx : Context) : View(ctx) {
             lrr.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+
+        fun create(activity : Activity) : RectRot180View {
+            val view : RectRot180View = RectRot180View(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
