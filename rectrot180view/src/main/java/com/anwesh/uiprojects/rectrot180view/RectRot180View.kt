@@ -135,4 +135,28 @@ class RectRot180View (ctx : Context) : View(ctx) {
             return this
         }
     }
+
+    data class LinkedRectRot(var i : Int) {
+
+        var curr : RR180Node = RR180Node(0)
+
+        var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            curr.draw(canvas, paint)
+        }
+
+        fun update(cb  : (Int, Float) -> Unit) {
+            curr.update {i, scl ->
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                cb(i, scl)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            curr.startUpdating(cb)
+        }
+    }
 }
